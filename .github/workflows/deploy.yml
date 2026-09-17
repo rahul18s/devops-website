@@ -11,6 +11,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -23,6 +26,13 @@ jobs:
         run: |
           mkdir dist
           cp index.html style.css dist/
+          
+      - name: Debug variables
+        run: |
+          echo "Has role: ${{ vars.AWS_ROLE_ARN != '' }}"
+          echo "Region: ${{ vars.AWS_REGION }}"
+          echo "Bucket: ${{ vars.S3_BUCKET }}"
+          echo "Role ARN: ${{ vars.AWS_ROLE_ARN }}"
 
       - name: Authenticate with AWS
         uses: aws-actions/configure-aws-credentials@v4
