@@ -26,18 +26,12 @@ jobs:
         run: |
           mkdir dist
           cp index.html style.css dist/
-          
-      - name: Debug variables
-        run: |
-          echo "Has role: ${{ vars.AWS_ROLE_ARN != '' }}"
-          echo "Region: ${{ vars.AWS_REGION }}"
-          echo "Bucket: ${{ vars.S3_BUCKET }}"
-          echo "Role ARN: ${{ vars.AWS_ROLE_ARN }}"
 
       - name: Authenticate with AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Deploy to S3
